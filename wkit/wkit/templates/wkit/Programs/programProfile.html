@@ -1,0 +1,118 @@
+{% block menu %}
+  {% include "wkit/menu.html" %}
+{% endblock %}
+
+<h1 style="padding-bottom: 0px;margin: 0;">{{ program.program_name }}</h1>
+<p style="margin: 0; padding-bottom: 15px;">&nbsp;&nbsp;&nbsp;program profile</p>
+
+<form method="post">
+{% csrf_token %}
+
+<table class="profile">
+  <tr height=50>
+    <th>Type</th>
+    <th>Value</th> 
+  </tr>
+	<tr height=50 hidden>
+		<td>ID</td>
+		<td><input name="id" value="{{ program.id }}" readonly></td>
+	</tr>
+  <tr height=50>
+    <td>Program Name</td>
+    <td><input class="enableEdit" id="name" name="program_name" value="{{ program.program_name }}" readonly></td> 
+  </tr>
+  <tr height=50>
+    <td>Organization</td>
+    <td>
+      <input class="nonEditMode" id="organization_name" name="organization_name" value="{{ organization.organization_name }}" readonly>
+      <input type="hidden" id="organization_id" value="{{ organization.id }}" hidden>
+
+			<select id="newOrganization" name="organizationID" class="field-select" hidden>
+				{% for org in organizations %}
+					<option value="{{ org.id }}">{{ org.organization_name }}</option>
+				{% endfor %}
+			</select>
+		</td> 
+  </tr>
+	<tr height=50>
+    <td>Phone Number</td>
+    <td><input class="enableEdit" placeholder="xxx-xxx-xxxx" id="phone_number" name="phone_number" type="phone-number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value="{{ program.phone_number }}" readonly></td> 
+  </tr>
+	<tr height=50>
+    <td>Email</td>
+    <td><input class="enableEdit" id="email" name="email" value="{{ program.email }}" readonly></td> 
+  </tr>
+	<tr height=50>
+    <td>Time Commitment</td>
+    <td>
+      <input class="nonEditMode" id="time_commitment" name="time_commitment" value="{{ program.time_commitment }}" readonly>
+
+      <div id="change-time-commitment" hidden>
+        <select id="new_time_commitment" name="time_commitment" class="field-select">
+        <option value="greater than 40 hrs/week">greater than 40 hrs/week</option>
+        <option value="~40 hrs/week">~40 hrs/week</option>
+        <option value="~20 hrs/week">~20 hrs/week</option>
+        <option value="~30 hrs/week">~30 hrs/week</option>
+        <option value="~10 hrs/week">~10 hrs/week</option>
+        <option value="~5 hrs/week">~5 hrs/week</option>
+        <option value="lesws than 5 hrs/week">less than 5 hrs/week<option>
+        </select>
+      </div>
+    </td> 
+  </tr>
+	<tr height=50>
+    <td>Field-Of-Interest</td>
+    <td>
+			<input class="nonEditMode" id="interest" name="interest" value="{{ program.interest }}" readonly>
+
+			<select name="interest" class="field-select" id="add-another-interest" hidden>
+				{% for interest in interests %}
+					<option value="{{ interest.interest }}">{{ interest.interest }}</option>
+				{% endfor %}
+			</select>
+		</td> 
+  </tr>
+  <tr height=50>
+    <td>Start Dates</td>
+    <td>
+        <textarea rows="10" cols="60" class="enableEdit" name="start_dates" id="start_dates" class="field-long field-textarea" readonly>
+{{ program.start_dates }}</textarea>
+    </td>
+  </tr>
+  <tr height=50>
+    <td>Application Deadlines</td>
+    <td>
+        <textarea rows="10" cols="60" class="enableEdit" name="application_deadlines" id="deadlines" class="field-long field-textarea" readonly>
+{{ program.application_deadlines }}</textarea>
+    </td>
+  </tr>
+	<tr height=50>
+    <td>Notes</td>
+    <td>
+        <textarea rows="10" cols="60" class="enableEdit" name="notes" id="notes" class="field-long field-textarea" readonly>
+{{ program.notes }}</textarea>
+    </td> 
+  </tr>
+
+</table>
+
+<div id="editContent">
+<button type="button" onClick="enableEdit()">Edit</button><br>
+</div>
+
+<input id="saveButton" type="submit" value="save" hidden>
+<br>
+
+<button style="color: red">Delete Program</button>
+
+</form>
+
+{% load static %}
+
+<script src="{% static 'wkit/edit_profile.js' %}"></script>
+<script src="{% static 'wkit/program_profile.js' %}"></script>
+<script src="{% static 'wkit/create.js' %}"></script>
+<script src="{% static 'wkit/csrftoken.js' %}"></script>
+
+
+

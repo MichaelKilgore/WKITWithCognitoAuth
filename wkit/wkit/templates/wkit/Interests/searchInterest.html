@@ -1,0 +1,53 @@
+{% block menu %}
+  {% include "wkit/menu.html" %}
+{% endblock %}
+
+{% load static %}
+
+<h1>Search Interests</h1>
+
+<form style="background-color:#E6E6FA; padding: 10px;" method="post">
+{% csrf_token %}
+
+	<label for="search-type">Search: </label>
+  <input type="hidden" name="search_type" value="interest">
+  <input id="search-entry" type="text" name="search_entry" value="{{request.POST.search_entry}}">
+	<input type="submit" value="Search" />
+	<br>
+</form>
+
+<table id="interest-search-table" class="search-table-interest">
+  <tr>
+    <th>Interest Name</th>
+		<th></th>
+  </tr>
+	{% for interest in interests %}
+  <tr id="interest_{{ interest.interest }}">
+    <td>{{ interest.interest }}</td>
+		<td style="margin: auto; text-align: center; color: red;"><button onclick="deleteInterest('{{ interest.interest }}')">delete</button></td>
+  </tr>
+	{% endfor %}
+
+  </table>
+
+{% csrf_token %}
+
+<br>
+<div style="position: absolute; right: 150;">
+  <button id="prev_page" onClick="lastPage()" {% if pageNum < 1 %}disabled{% endif %}>&larr;</button>
+  <span id="page_num">1</span>
+  <button id="next_page" onClick="nextPage()" {% if not hasNext %} disabled{% endif %}>&rarr;</button>
+</div>
+<br>
+<br>
+
+{% load static %}
+<script src="{% static 'wkit/interest_search.js' %}"></script>
+<script src="{% static 'wkit/csrftoken.js' %}"></script>
+
+{% block extrahead %}
+  <link rel="stylesheet" type="text/css" href="{% static 'wkit/style.css' %}">
+{% endblock %}
+
+
+
